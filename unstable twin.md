@@ -1,23 +1,23 @@
 
 
-### Unstable machine from tryhackme and its a great and undertaking room. so let's begain.....
+### Unstable machine from tryhackme and it's a great and undertaking room. so let's begin.....
 
 
 # Namp Scan.
 ![Nmap Result](https://user-images.githubusercontent.com/45504631/132653954-a34c70da-2d42-4fa4-a51d-da0b3ab2a40f.png)
 
 
-We can clearly see there is nothing much more for explore and see what going on. there is simple web page runnging on port 80. And ssh on port 22 which one is by defualt.
+We can see there is nothing much more to explore and see what going on. there is a simple web page running on port 80. And ssh on port 22 which one is by default.
 
 ### In Enumeration there is one key to look into web directory so let's start..
 ![Directory Scan.png](https://user-images.githubusercontent.com/45504631/132654224-a0d33b26-71de-42ac-98eb-8da07a7105ed.png)
- web can clearly see there is just one directory in /info but we goes to that we can see there is just one message.
+ web can see there is just one directory in /info but we go to that we can see there is just one message.
 
 
  
 
 
-It means there is game play off APIs we need to just this request into burp so we can get a more information about what's actually going on request.
+It means there is a game play-off APIs we need to justify this request into burp so we can get a piece of more information about what's going on request.
 
 ### Interpect request throw burp..
 
@@ -35,13 +35,13 @@ curl -X POST http://10.10.35.201/api
 <p>The method is not allowed for the requested URL.</p>
 ```
 
-  When I curl /api directory It's say there is one more directory named api i guess by searching about "How API work". so I'm curious to see why api directory not appear on scans. Then I try multiple thing by changing wordlist but It's not working. after so much hard work I find this 
+  When I curl /API directory It's saying there is one more directory named API I guess by searching about "How API work". so I'm curious to see why the API directory did not appear on scans. Then I try multiple things by changing wordlist but It's not working. after so much hard work I find this 
 ![image](https://user-images.githubusercontent.com/45504631/132656629-490d5e08-94ae-46e0-9d18-525e5851597c.png)     Defualt configuration of dirseach 
      
-We can clearly see by Defualt dirsearch support some respons code and also when I take a close look on curl request It's say ``405 Method Not Allowed``. It mean that api page respons code is 405 and we can try ffuf becasue It's fast and simple..
+We can see by Default dirsearch support some response code and also when I take a close look at the curl request It says ``405 Method Not Allowed``. It means that the API page response code is 405 and we can try ffuf because It's fast and simple...
 
 ![image](https://user-images.githubusercontent.com/45504631/132656838-6d0fc891-1218-4ae6-83ae-81352807a299.png)
-Found this /api directory and now let's move to Fuzz another directory in /api address..
+Found this /api directory and now let's move to Fuzz another directory in /api address...
 
 ![image](https://user-images.githubusercontent.com/45504631/132656867-cea01318-0cc3-4b89-8576-2f89c6f38025.png)
 
@@ -53,11 +53,11 @@ curl -X POST http://10.10.35.201/api/login
 ```
 ## SQL Injection Using Curl
 
-There is a hard part in this room so started try another another sql payloads for discover tables. And the end found pdf on exploit-db 
+There is a hard part in this room so started to try another SQL payloads for discover tables. And the end found pdf on exploit-DB 
 
 > https://www.exploit-db.com/docs/english/41397-injecting-sqlite-database-based-applications.pdf 
 
-Lot's of hard request and using to much payloads I get payloads to discover verion 
+Lot's of hard requests and using too much payloads I get payloads to discover version 
 
 > P : UNION SELECT 1,sqlite_version()--
 
@@ -80,7 +80,7 @@ Now take a look in notes to find ssh cridential.
 
 
 ![image](https://user-images.githubusercontent.com/45504631/132657301-4346add4-2acd-4f71-8bff-6f8adb446fb1.png)
-So yeah It's ssh cred and is in hash form. we first to crack down this..
+So yeah It's ssh cred and is in hash form. we first to crack down on this..
 
 ## HASH CRACKING 
 
@@ -100,15 +100,15 @@ Now time to final flag and nor there is no flag for root..
 Hint file in home directory server_notes.txt 
 
 ![image](https://user-images.githubusercontent.com/45504631/132663820-b8b30931-379c-4eb6-86c6-9b29d238739d.png)
-it's says about one directory which contains all family pictures so let's find directory and found one /opt.
+it says about one directory which contains all family pictures so let's find the directory and found one /opt.
 
 ![image](https://user-images.githubusercontent.com/45504631/132663888-a8c3039c-ec21-4e97-b007-44b364ea3d13.png)
 
-yeah after looking we can clearly think this is a steganography. but the biggest prob is share those files in machine for futher process.
+yeah after looking we can think this is steganography. but the biggest prob is to share those files in the machine for further process.
 
-And I tried different things like `python,Apache` and many other methods to but failed! 
+And I tried different things like `python, Apache` and many other methods but failed! 
 
-Moving to looking what indside main_5000.py we found this to take all images to my machine.
+Moving to look what inside main_5000.py we found this to take all images to my machine.
 
 ```
 @app.route('/get_image')
@@ -126,7 +126,7 @@ def get_image():
 
 ```
 
-And yeah we can see there is /get_image?name= peremeter to get those images according to these code. after using some google research I get how to curl these images in my machine.
+And yeah we can see there is /get_image?name= perimeter to get those images according to this code. after using some google research I get how to curl these images in my machine.
 
 ![image](https://user-images.githubusercontent.com/45504631/132664206-fefee14b-5f25-4e4f-aa0f-c514d81c45d9.png)
 
@@ -139,17 +139,17 @@ Using these to get all images.
 
 Time to get a final flag.
 
-try steghide to get a what hidden message inside in a images.
+try steghide to get a what hidden message inside in images.
 
 ![image](https://user-images.githubusercontent.com/45504631/132664337-66bbb66f-6fec-425f-85cf-ebf748004a54.png)
-At last extracting I found notes.txt file on every images and there is a all notes file with some hash and line denoted by colors like this.
+At last extracting, I found notes.txt file on every image and there is an all notes file with some hash and line denoted by colors like this.
 
 ```
 Red - 1DVsdb2uEE0k5HK4GAIZ
 
 ```
 
-One notes file like named notes.txt seems there is some hint to crack those hash.
+One notes file like-named notes.txt seems there is some hint to crack those hash.
 
 > Hint : You need to find all my children and arrange in a rainbow!
 
